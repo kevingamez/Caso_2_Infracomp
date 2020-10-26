@@ -1,1 +1,2 @@
-# Caso_2_Infracomp
+# Caso 2
+
