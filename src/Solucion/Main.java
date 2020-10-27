@@ -70,9 +70,13 @@ public class Main {
 						System.out.println("Por favor ejecute el paso 2 antes de realizar este proceso.");
 					}
 				} 
-				else 
+				else if(Integer.parseInt(line) == 3)
 				{
 					leer = false;
+				}
+				else
+				{
+					System.out.println(('e'+1));
 				}
 			}
 		} 

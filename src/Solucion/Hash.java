@@ -64,6 +64,27 @@ public class Hash {
 	 */
 	public static String identificar_entrada(byte[] codigoHash, String algoritmo) 
 	{
-		return null;
+		byte[] codigo=null;
+		boolean encontrado=false;
+		String resultado="";
+		while(encontrado==false)
+		{
+			for(int i=97; i<123 && encontrado==false; ++i)
+			{
+				char actual=(char) i;
+				codigo=generar_codigo(actual+"", algoritmo);
+				boolean iguales=true;
+				for(int j=0; j<codigo.length && iguales==true; ++j)
+				{
+					iguales=(codigo[j]!=codigoHash[j])?false:true;
+				}
+				if(iguales==true)
+				{
+					encontrado=true;
+					resultado+=actual;
+				}
+			}
+		}			
+		return resultado;
 	}
 }
