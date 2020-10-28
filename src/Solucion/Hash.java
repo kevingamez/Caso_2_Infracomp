@@ -65,7 +65,7 @@ public class Hash {
 		byte[] codigo = null;
 		boolean encontrado = false;
 		String resultado = "";
-		for (int i = 1; i <=4 && encontrado == false; ++i) {
+		for (int i = 1; i <= 6 && encontrado == false; ++i) {
 			LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i);
 			while (encontrado == false && combinaciones.isEmpty() == false) {
 				String prueba = combinaciones.removeFirst();
@@ -81,5 +81,5 @@ public class Hash {
 			}
 		}
 		return resultado;
-	}	
+	}
 }
