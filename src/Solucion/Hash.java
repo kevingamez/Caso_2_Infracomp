@@ -2,9 +2,11 @@ package Solucion;
 
 import java.security.MessageDigest;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
- * Clase que genera el código hash de los datos con base en un algoritmo determinado.
+ * Clase que genera el código hash de los datos con base en un algoritmo
+ * determinado.
  * 
  * @author Sergio Julian Zona Moreno y Kevin Steven Gamez Abril
  */
@@ -42,14 +44,11 @@ public class Hash {
 	 * @return Código en bytes encriptado.
 	 */
 	public static byte[] generar_codigo(String pMensaje, String algoritmo) {
-		try 
-		{
+		try {
 			MessageDigest digest = MessageDigest.getInstance(algoritmo);
 			digest.update(pMensaje.getBytes());
 			return digest.digest();
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -62,29 +61,25 @@ public class Hash {
 	 * @param algoritmo   Algoritmo que será utilizado.
 	 * @return Mensaje original codificado.
 	 */
-	public static String identificar_entrada(byte[] codigoHash, String algoritmo) 
-	{
-		byte[] codigo=null;
-		boolean encontrado=false;
-		String resultado="";
-		while(encontrado==false)
-		{
-			for(int i=97; i<123 && encontrado==false; ++i)
-			{
-				char actual=(char) i;
-				codigo=generar_codigo(actual+"", algoritmo);
-				boolean iguales=true;
-				for(int j=0; j<codigo.length && iguales==true; ++j)
-				{
-					iguales=(codigo[j]!=codigoHash[j])?false:true;
+	public static String identificar_entrada(byte[] codigoHash, String algoritmo) {
+		byte[] codigo = null;
+		boolean encontrado = false;
+		String resultado = "";
+		for (int i = 1; i <=4 && encontrado == false; ++i) {
+			LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i);
+			while (encontrado == false && combinaciones.isEmpty() == false) {
+				String prueba = combinaciones.removeFirst();
+				codigo = generar_codigo(prueba, algoritmo);
+				boolean iguales = true;
+				for (int j = 0; j < codigo.length && iguales == true; ++j) {
+					iguales = (codigo[j] != codigoHash[j]) ? false : true;
 				}
-				if(iguales==true)
-				{
-					encontrado=true;
-					resultado+=actual;
+				if (iguales == true) {
+					encontrado = true;
+					resultado = prueba;
 				}
 			}
-		}			
+		}
 		return resultado;
-	}
+	}	
 }

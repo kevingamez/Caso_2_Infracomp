@@ -62,8 +62,12 @@ public class Main {
 					//Obtener código criptográfico del mensaje.
 					if (codigoCriptograficoHash != null) 
 					{
+						long inicio = System.currentTimeMillis();
 						String desencriptado = Hash.identificar_entrada(codigoCriptograficoHash, algoritmo);
+						long fin = System.currentTimeMillis();
 						System.out.println(desencriptado);
+						System.out.println("El proceso de obtención del código tardó: " + (fin - inicio) + " milisegundos\n");
+						
 					} 
 					else 
 					{
