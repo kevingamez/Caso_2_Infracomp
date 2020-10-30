@@ -85,8 +85,9 @@ public class Main {
 				}
 			}
 		} catch (Exception e) {
-			System.out
-					.println("Ha ocurrido un error inesperado \nPor favor reinicie la aplicación e intente de nuevo\n");
+			System.out.println("Ha ocurrido un error inesperado \nPor favor reinicie la aplicación e intente de nuevo\n");
+			System.out.println(e.getMessage());
+
 		}
 	}
 }
