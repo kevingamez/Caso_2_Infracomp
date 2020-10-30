@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/ASUS/OneDrive - Universidad de los andes/Universidad/Semestres/4. Cuarto semestre/Infraestructura computacional/Casos/Caso 2/Caso_2_Infracomp/lib/derby.jar"/>
+	<classpathentry kind="lib" path="lib/derby.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

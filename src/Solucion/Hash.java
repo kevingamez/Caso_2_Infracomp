@@ -13,10 +13,15 @@ import java.util.LinkedList;
 public class Hash {
 
 	/**
-	 * Constructor vacio.
+	 * Atributo diccionario.
 	 */
-	public Hash() {
+	private static AtaqueDiccionario diccionario;
 
+	/**
+	 * Constructor del hash.
+	 */
+	public Hash(AtaqueDiccionario diccionario) {
+		this.diccionario = diccionario;
 	}
 
 	/**
@@ -61,25 +66,32 @@ public class Hash {
 	 * @param algoritmo   Algoritmo que será utilizado.
 	 * @return Mensaje original codificado.
 	 */
-	public static String identificar_entrada(byte[] codigoHash, String algoritmo) {
-		byte[] codigo = null;
-		boolean encontrado = false;
-		String resultado = "";
-		for (int i = 1; i <= 6 && encontrado == false; ++i) {
-			LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i);
-			while (encontrado == false && combinaciones.isEmpty() == false) {
-				String prueba = combinaciones.removeFirst();
-				codigo = generar_codigo(prueba, algoritmo);
-				boolean iguales = true;
-				for (int j = 0; j < codigo.length && iguales == true; ++j) {
-					iguales = (codigo[j] != codigoHash[j]) ? false : true;
-				}
-				if (iguales == true) {
-					encontrado = true;
-					resultado = prueba;
+	public static String identificar_entrada(byte[] codigoHash, String algoritmo) throws Exception {
+
+		String resultado = diccionario.obtenerValor(algoritmo, codigoHash);
+		if (resultado.compareTo("") == 0) {
+			byte[] codigo = null;
+			boolean encontrado = false;
+
+			for (int i = 1; i <= 7 && encontrado == false; ++i) {
+				LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i);
+				while (encontrado == false && combinaciones.isEmpty() == false) {
+					String prueba = combinaciones.removeFirst();
+					codigo = generar_codigo(prueba, algoritmo);
+					boolean iguales = true;
+					for (int j = 0; j < codigo.length && iguales == true; ++j) {
+						iguales = (codigo[j] != codigoHash[j]) ? false : true;
+					}
+					if (iguales) {
+						encontrado = true;
+						resultado = prueba;
+						System.out.println("Se encontró 1 palabra con el código " + Hash.imprimirHexa(codigoHash));
+						System.out.println(resultado + ": " + Hash.imprimirHexa(codigoHash));
+					}
 				}
 			}
 		}
+
 		return resultado;
 	}
 }

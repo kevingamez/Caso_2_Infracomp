@@ -6,8 +6,7 @@ import java.util.LinkedList;
 
 public class Combinaciones {
 	private static LinkedList<String> list;
-	private static FileWriter fichero;
-	private static PrintWriter pw;
+
 
 	// Driver Code
 	public static LinkedList<String> darListaCombinaciones(int pNumCaracteres) {
@@ -35,9 +34,7 @@ public class Combinaciones {
 		// Base case: k is 0,
 		// print prefix
 		if (k == 0) {
-			// list.addLast(prefix);
-			pw.println(prefix);
-			System.out.println(prefix);
+			list.addLast(prefix);
 			return;
 		}
 		// One by one add all characters
@@ -54,21 +51,5 @@ public class Combinaciones {
 
 	}
 
-	public static void main(String[] arg) {
-
-		try {
-			long a = System.currentTimeMillis();
-			fichero = new FileWriter("./data/datos.txt");
-			pw = new PrintWriter(fichero);
-			for (int i = 1; i < 7; i++) {
-				darListaCombinaciones(i);
-			}
-			pw.close();
-			fichero.close();
-			long b = System.currentTimeMillis();
-			System.out.println(b - a + " milisegundos");
-		} catch (Exception e) {
-
-		}
-	}
+	
 }
