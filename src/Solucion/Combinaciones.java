@@ -62,12 +62,8 @@ public class Combinaciones extends Thread {
 	/**
 	 * Constructor vacío de la clase
 	 */
-	public Combinaciones( int caracteres, byte[] codigoCriptografico, String algoritmo) {
-		this.caracteres = caracteres;
-		this.codigoCriptografico = codigoCriptografico;
-		this.algoritmo = algoritmo;
-		encontrado = false;
-		palabra = "";
+	public Combinaciones() {
+
 	}
 
 	/**
@@ -84,22 +80,6 @@ public class Combinaciones extends Thread {
 		printAllKLength(set1, pNumCaracteres, pLetra);
 		return list;
 	}
-	
-	/**
-	 * Método que retorna una lista con todas las combinaciones de letras posibles.
-	 * 
-	 * @param pNumCaracteres. Número de subconjuntos creados.
-	 * @param pLetra.         Letra inicial. Puede ser null.
-	 * @return
-	 */
-	public static LinkedList<String> darListaCombinaciones2(int pNumCaracteres) {
-		char[] set1 = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-				't', 'u', 'v', 'w', 'x', 'y', 'z' };
-
-		printAllKLength2(set1, pNumCaracteres);
-		return list;
-	}
-
 
 	/**
 	 * Método que retorna todas las combinaciones según una longitud determinada.
@@ -120,20 +100,6 @@ public class Combinaciones extends Thread {
 	}
 
 	/**
-	 * Método que retorna todas las combinaciones según una longitud determinada.
-	 * 
-	 * @param set    Conjunto de letras que será combinado.
-	 * @param k.     Subconjunto de combinación.
-	 * @param letra. Letra inicial, puede ser null.
-	 */
-	public static void printAllKLength2(char[] set, int k) {
-		int n = set.length;
-		list = new LinkedList<String>();
-		printAllKLengthRec3(set, "", n, k);
-
-	}
-
-	/**
 	 * Método que retorna recursivamente los substrings combinados y los añade a la
 	 * lista.
 	 * 
@@ -149,15 +115,10 @@ public class Combinaciones extends Thread {
 		// Añade la constante de letra como prefijo.
 		if (k == 0) {
 			list.addLast(letra + prefix);
-			encontrado = Hash.comprobarAlgoritmo(letra + prefix, codigoCriptografico, algoritmo);
-			palabra = (encontrado == false) ? "" : letra + prefix;
-			//System.out.println(letra + prefix);
-			if(encontrado) {
-				System.out.println("Se encontro la palabra " + palabra);
-			}
+			//encontrado = Hash.comprobarAlgoritmo(letra + prefix, codigoCriptografico, algoritmo);
+			//palabra = (encontrado == false) ? "" : letra + prefix;
 			return;
 		}
-		
 		// Añade todos los caracteres recursivamente.
 		for (int i = 0; i < n && encontrado == false; ++i) {
 			// Nuevo caracter para ser añadido. Creación del prefijo.
@@ -168,7 +129,6 @@ public class Combinaciones extends Thread {
 		}
 	}
 
-	
 	/**
 	 * Método que retorna recursivamente los substrings combinados y los añade a la
 	 * lista.
@@ -182,26 +142,6 @@ public class Combinaciones extends Thread {
 		// Caso base k=0.
 		if (k == 0) {
 			list.addLast(prefix);
-			encontrado = Hash.comprobarAlgoritmo( prefix, codigoCriptografico, algoritmo);
-			palabra = (encontrado == false) ? "" : prefix;
-			System.out.println(prefix);
-			return;
-		}
-		// Añade todos los caracteres recursivamente.
-		for (int i = 0; i < n && !encontrado; ++i) {
-			// Nuevo caracter para ser añadido. Creación del prefijo.
-			String newPrefix = prefix + set[i];
-
-			// Decrece K pues se añade un nuevo caracter.
-			printAllKLengthRec2(set, newPrefix, n, k - 1);
-		}
-	}
-
-	public static void printAllKLengthRec3(char[] set, String prefix, int n, int k) {
-		// Caso base k=0.
-		if (k == 0) {
-			list.addLast(prefix);
-			System.out.println(prefix);
 			return;
 		}
 		// Añade todos los caracteres recursivamente.
@@ -213,7 +153,7 @@ public class Combinaciones extends Thread {
 			printAllKLengthRec2(set, newPrefix, n, k - 1);
 		}
 	}
-	
+
 	/**
 	 * Devuelve la lista de combinaciones.
 	 */
@@ -225,7 +165,7 @@ public class Combinaciones extends Thread {
 	 * Devuelve la palabra encontrada que generó el código criptográfico.
 	 * @return Palabra encontrada.
 	 */
-	public static String darPalabra()
+	public String darPalabra()
 	{
 		return palabra;
 	}
@@ -236,5 +176,6 @@ public class Combinaciones extends Thread {
 	public void run() 
 	{
 		darListaCombinaciones(caracteres, letra);
+		System.out.println("Thread done");
 	}
 }

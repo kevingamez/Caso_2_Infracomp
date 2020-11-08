@@ -2,6 +2,7 @@ package Solucion;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -13,8 +14,7 @@ import java.util.LinkedList;
  */
 public class Hash {
 
-	private static ArrayList<Combinaciones> combs;
-	
+	private static int contador=0;
 	/**
 	 * Atributo diccionario.
 	 */
@@ -75,67 +75,74 @@ public class Hash {
 		if (resultado.compareTo("") == 0) {
 			byte[] codigo = null;
 			boolean encontrado = false;
-
+			HashManager hm = new HashManager();
+			hm.init(algoritmo, codigoHash);
 			/*for (int i = 1; i <= 5 && encontrado == false; ++i) {
-				Combinaciones combi = new Combinaciones(i, codigoHash, algoritmo);
-				LinkedList<String> combinaciones = combi.darListaCombinaciones(i, "");
-				resultado = combi.darPalabra();
-				if (resultado.compareTo("") != 0) {
-					encontrado = true;
-					System.out.println("Se encontró 1 palabra con el código " + Hash.imprimirHexa(codigoHash));
-					System.out.println(resultado + ": " + Hash.imprimirHexa(codigoHash));
+				LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i, "");
+				while (encontrado == false && combinaciones.isEmpty() == false) {
+					String prueba = combinaciones.removeFirst();
+					codigo = generar_codigo(prueba, algoritmo);
+					boolean iguales = true;
+					for (int j = 0; j < codigo.length && iguales == true; ++j) {
+						iguales = (codigo[j] != codigoHash[j]) ? false : true;
+					}
+					if (iguales) {
+						encontrado = true;
+						resultado = prueba;
+						System.out.println("Se encontró 1 palabra con el código " + Hash.imprimirHexa(codigoHash));
+						System.out.println(resultado + ": " + Hash.imprimirHexa(codigoHash));
+					}
 				}
-
-			}*/
+			}
 			System.out.println("Se verificaron los primeros 5 caracteres");
-			combs = new ArrayList<Combinaciones>();
-			Combinaciones combi =  new Combinaciones(3, codigoHash, algoritmo);
-			LinkedList<String> prefijos = combi.darListaCombinaciones2(3);
-			
-			for (int i = 6; i <= 7 && encontrado == false; ++i) {
-				LinkedList<String> prefijosCopia = prefijos;
-				while (!prefijosCopia.isEmpty()) {
+			ArrayList<Combinaciones> combs= new ArrayList<Combinaciones>();
 
-					Combinaciones combinacion = new Combinaciones(prefijosCopia.removeFirst(), (i - 3), codigoHash,
-							algoritmo);
+			for (int i = 6; i <= 7 && encontrado == false; ++i) 
+			{
+				for (int j = 97; j < 123; ++j) {
+					char letra = (char) j;
+					Combinaciones combinacion = new Combinaciones(""+letra, (i - 1), codigoHash, algoritmo);
 					combs.add(combinacion);
 					combinacion.start();
-
 				}
 			}
-			System.out.println("Se iniciarion " + combs.size() + " procesos.");
-			for (int i = 0; i < combs.size() && encontrado == false; ++i) {
-				resultado = combs.get(i).darPalabra();
-				if (resultado.compareTo("") != 0) {
-					encontrado = true;
+
+			for(int i=0; i<combs.size() && encontrado==false; ++i)
+			{
+				resultado=combs.get(i).darPalabra();
+				if(resultado.compareTo("")!=0)
+				{
+					encontrado=true;
 					System.out.println("Se encontró 1 palabra con el código " + Hash.imprimirHexa(codigoHash));
 					System.out.println(resultado + ": " + Hash.imprimirHexa(codigoHash));
 				}
-				if (i == (combs.size() - 1)) {
-					i = 0;
+				if(i==(combs.size()-1))
+				{
+					i=0;
 				}
 			}
 
-			// Detiene todos los threads de ejecución.
-			for (int i = 0; i < combs.size(); ++i) {
+			//Detiene todos los threads de ejecución.
+			for(int i=0; i< combs.size(); ++i)
+			{
 				combs.get(i).stop();
 			}
+			*/
 		}
 		return resultado;
 	}
 
 	public static boolean comprobarAlgoritmo(String palabra, byte[] codigoHash, String algoritmo) {
 
-		boolean iguales = true;
+		/*boolean iguales = true;
 		byte[] codigo = generar_codigo(palabra, algoritmo);
-		for (int j = 0; j < codigo.length && iguales == true; ++j) {
+		for (int j = 0; j < codigo.length && iguales == true; ++j) 
+		{
 			iguales = (codigo[j] != codigoHash[j]) ? false : true;
 		}
-		return iguales;
+		return iguales;	*/
+		System.out.println(++contador);
+		byte[] codigo = generar_codigo(palabra, algoritmo);
+		return Arrays.equals(codigo, codigoHash);
 	}
-	
-	public static void verificar() {
-		
-	}
-	
 }
