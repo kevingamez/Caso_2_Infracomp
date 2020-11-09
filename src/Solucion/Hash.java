@@ -99,7 +99,7 @@ public class Hash {
 			int size = alphabet.length;
 			
 			for (int j = 0; j < size; ++j) {
-				Combinaciones combinaciones = new Combinaciones(alphabet[j]+"", 6, codigoHash,  algoritmo);
+				Combinaciones combinaciones = new Combinaciones(alphabet[j]+"", 5, codigoHash,  algoritmo);
 				combinaciones.start();			
 			}
 			

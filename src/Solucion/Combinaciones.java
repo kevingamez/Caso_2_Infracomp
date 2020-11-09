@@ -20,7 +20,7 @@ public class Combinaciones extends Thread {
 	/**
 	 * Letra representativa del Thread.
 	 */
-	private static String letra;
+	private String letra;
 
 	/**
 	 * Cantidad caracteres
@@ -80,7 +80,7 @@ public class Combinaciones extends Thread {
 	public static LinkedList<String> darListaCombinaciones(int pNumCaracteres, String pLetra) {
 		char[] set1 = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n', 'ñ', 'o', 'p', 'q', 'r', 's',
 				't', 'u', 'v', 'w', 'x', 'y', 'z' };
-		pLetra = letra;
+		//pLetra = letra;
 		printAllKLength(set1, pNumCaracteres, pLetra);
 		return list;
 	}
