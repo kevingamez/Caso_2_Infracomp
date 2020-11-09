@@ -120,7 +120,7 @@ public class Combinaciones extends Thread {
 			return;
 		}
 		// Añade todos los caracteres recursivamente.
-		for (int i = 0; i < n && encontrado == false; ++i) {
+		for (int i = 0; i < n && !encontrado ; ++i) {
 			// Nuevo caracter para ser añadido. Creación del prefijo.
 			String newPrefix = prefix + set[i];
 

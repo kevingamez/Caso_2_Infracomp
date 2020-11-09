@@ -75,15 +75,14 @@ public class Hash {
 		if (resultado.compareTo("") == 0) {
 			byte[] codigo = null;
 			boolean encontrado = false;
-			HashManager hm = new HashManager();
-			hm.init(algoritmo, codigoHash);
-			/*for (int i = 1; i <= 5 && encontrado == false; ++i) {
+			
+			for (int i = 1; i <= 5 && !encontrado; ++i) {
 				LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i, "");
-				while (encontrado == false && combinaciones.isEmpty() == false) {
+				while (!encontrado  && !combinaciones.isEmpty()) {
 					String prueba = combinaciones.removeFirst();
 					codigo = generar_codigo(prueba, algoritmo);
 					boolean iguales = true;
-					for (int j = 0; j < codigo.length && iguales == true; ++j) {
+					for (int j = 0; j < codigo.length && iguales; ++j) {
 						iguales = (codigo[j] != codigoHash[j]) ? false : true;
 					}
 					if (iguales) {
@@ -95,8 +94,14 @@ public class Hash {
 				}
 			}
 			System.out.println("Se verificaron los primeros 5 caracteres");
-			ArrayList<Combinaciones> combs= new ArrayList<Combinaciones>();
-
+			//ArrayList<Combinaciones> combs= new ArrayList<Combinaciones>();
+			HashManager hm = new HashManager();
+			hm.init(algoritmo, codigoHash);
+			while(!hm.fueEncontrado()) {
+				
+			}
+			resultado = hm.darResultado() + ": " + Hash.imprimirHexa(codigoHash) + "\n";
+			/*
 			for (int i = 6; i <= 7 && encontrado == false; ++i) 
 			{
 				for (int j = 97; j < 123; ++j) {
@@ -141,7 +146,7 @@ public class Hash {
 			iguales = (codigo[j] != codigoHash[j]) ? false : true;
 		}
 		return iguales;	*/
-		System.out.println(++contador);
+		//System.out.println(++contador);
 		byte[] codigo = generar_codigo(palabra, algoritmo);
 		return Arrays.equals(codigo, codigoHash);
 	}
