@@ -2,6 +2,8 @@ package Solucion;
 
 import java.util.LinkedList;
 
+import org.apache.derby.tools.sysinfo;
+
 /**
  * Clase que se encarga de realizar combinaciones con repetición para todo el
  * conjunto de Arrays.
@@ -45,6 +47,8 @@ public class Combinaciones extends Thread {
 	 */
 	private static String palabra;
 
+	
+	private volatile boolean found;
 	/**
 	 * Constructor de la clase que inicializa la letra del Thread.
 	 * 
@@ -74,7 +78,7 @@ public class Combinaciones extends Thread {
 	 * @return
 	 */
 	public static LinkedList<String> darListaCombinaciones(int pNumCaracteres, String pLetra) {
-		char[] set1 = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+		char[] set1 = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n', 'ñ', 'o', 'p', 'q', 'r', 's',
 				't', 'u', 'v', 'w', 'x', 'y', 'z' };
 		pLetra = letra;
 		printAllKLength(set1, pNumCaracteres, pLetra);
@@ -114,9 +118,12 @@ public class Combinaciones extends Thread {
 		// Caso base k=0
 		// Añade la constante de letra como prefijo.
 		if (k == 0) {
-			list.addLast(letra + prefix);
-			//encontrado = Hash.comprobarAlgoritmo(letra + prefix, codigoCriptografico, algoritmo);
-			//palabra = (encontrado == false) ? "" : letra + prefix;
+			//list.addLast(letra + prefix);
+			encontrado = Hash.comprobarAlgoritmo(letra + prefix, codigoCriptografico, algoritmo);
+			palabra = (encontrado == false) ? "" : letra + prefix;
+			if(palabra.compareTo("")!=0) {
+				System.out.println(palabra);
+			}
 			return;
 		}
 		// Añade todos los caracteres recursivamente.
@@ -170,12 +177,18 @@ public class Combinaciones extends Thread {
 		return palabra;
 	}
 
+	public void forceStop() {
+		found = true;
+	}
+	
 	/**
 	 * Método que inicia la ejecución de un Thread.
 	 */
-	public void run() 
+	public synchronized void run() 
 	{
-		darListaCombinaciones(caracteres, letra);
-		System.out.println("Thread done");
+		while(!found) {
+			darListaCombinaciones(caracteres, letra);
+			System.out.println("Thread done");
+		}
 	}
 }

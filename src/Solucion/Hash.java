@@ -26,6 +26,9 @@ public class Hash {
 	public Hash(AtaqueDiccionario diccionario) {
 		this.diccionario = diccionario;
 	}
+	
+	private static char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o',
+			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 	/**
 	 * Método que imprime un arreglo de bytes hexadecimal.
@@ -76,15 +79,15 @@ public class Hash {
 			byte[] codigo = null;
 			boolean encontrado = false;
 			
-			for (int i = 1; i <= 5 && !encontrado; ++i) {
+			/*for (int i = 1; i <= 5 && !encontrado; ++i) {
 				LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i, "");
 				while (!encontrado  && !combinaciones.isEmpty()) {
 					String prueba = combinaciones.removeFirst();
 					codigo = generar_codigo(prueba, algoritmo);
 					boolean iguales = true;
-					for (int j = 0; j < codigo.length && iguales; ++j) {
-						iguales = (codigo[j] != codigoHash[j]) ? false : true;
-					}
+					
+				    iguales = comprobarAlgoritmo(prueba, codigoHash, algoritmo);
+					
 					if (iguales) {
 						encontrado = true;
 						resultado = prueba;
@@ -92,15 +95,22 @@ public class Hash {
 						System.out.println(resultado + ": " + Hash.imprimirHexa(codigoHash));
 					}
 				}
+			}*/
+			int size = alphabet.length;
+			
+			for (int j = 0; j < size; ++j) {
+				Combinaciones combinaciones = new Combinaciones(alphabet[j]+"", 6, codigoHash,  algoritmo);
+				combinaciones.start();			
 			}
+			
 			System.out.println("Se verificaron los primeros 5 caracteres");
 			//ArrayList<Combinaciones> combs= new ArrayList<Combinaciones>();
-			HashManager hm = new HashManager();
+			/*HashManager hm = new HashManager();
 			hm.init(algoritmo, codigoHash);
 			while(!hm.fueEncontrado()) {
 				
 			}
-			resultado = hm.darResultado() + ": " + Hash.imprimirHexa(codigoHash) + "\n";
+			resultado = hm.darResultado() + ": " + Hash.imprimirHexa(codigoHash) + "\n";*/
 			/*
 			for (int i = 6; i <= 7 && encontrado == false; ++i) 
 			{
