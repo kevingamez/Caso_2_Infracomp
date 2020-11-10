@@ -157,12 +157,12 @@ public class AtaqueDiccionario {
 
 			}
 			if (i == 1) {
-				System.out.println("Se encontró " + i + " palabra con el código " + Hash.imprimirHexa(cadena));
+				//System.out.println("Se encontró " + i + " palabra con el código " + Hash.imprimirHexa(cadena));
 			}else if(i > 1) {
-				System.out.println("Se encontraron " + i + " palabras con el código " + Hash.imprimirHexa(cadena));
+				//System.out.println("Se encontraron " + i + " palabras con el código " + Hash.imprimirHexa(cadena));
 				
 			}else {
-				System.out.println("No funcionó el ataque por diccionario. Se procede a utilizar fuerza bruta.");
+				//System.out.println("No funcionó el ataque por diccionario. Se procede a utilizar fuerza bruta.");
 				return "";
 			}
 

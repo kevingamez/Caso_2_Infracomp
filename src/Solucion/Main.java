@@ -64,7 +64,8 @@ public class Main {
 						long inicio = System.currentTimeMillis();
 						String desencriptado = hash.identificar_entrada(codigoCriptograficoHash, algoritmo);
 						long fin = System.currentTimeMillis();
-						System.out.println(desencriptado);
+						System.out.println("Se encontró " + 1 + " palabra con el código " + Hash.imprimirHexa(codigoCriptograficoHash));
+						System.out.println(desencriptado+": " +Hash.imprimirHexa(codigoCriptograficoHash));
 						System.out.println(
 								"El proceso de obtención del código tardó: " + (fin - inicio) + " milisegundos\n");
 

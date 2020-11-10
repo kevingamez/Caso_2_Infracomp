@@ -3,8 +3,8 @@ package Solucion;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Clase que genera el código hash de los datos con base en un algoritmo
@@ -12,9 +12,14 @@ import java.util.LinkedList;
  * 
  * @author Sergio Julian Zona Moreno y Kevin Steven Gamez Abril
  */
-public class Hash {
+@SuppressWarnings("deprecation")
+public class Hash implements Observer{
 
-	private static int contador=0;
+	private ArrayList<Thread> hilos;
+	private ArrayList<Combinaciones> classHilos;
+	private String resultado;
+	private boolean encontrado;
+
 	/**
 	 * Atributo diccionario.
 	 */
@@ -72,13 +77,10 @@ public class Hash {
 	 * @param algoritmo   Algoritmo que será utilizado.
 	 * @return Mensaje original codificado.
 	 */
-	public static String identificar_entrada(byte[] codigoHash, String algoritmo) throws Exception {
+	public String identificar_entrada(byte[] codigoHash, String algoritmo) throws Exception {
 
 		String resultado = diccionario.obtenerValor(algoritmo, codigoHash);
 		if (resultado.compareTo("") == 0) {
-			byte[] codigo = null;
-			boolean encontrado = false;
-			
 			/*for (int i = 1; i <= 5 && !encontrado; ++i) {
 				LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i, "");
 				while (!encontrado  && !combinaciones.isEmpty()) {
@@ -97,13 +99,14 @@ public class Hash {
 				}
 			}*/
 			int size = alphabet.length;
-			
-			for (int j = 0; j < size; ++j) {
-				Combinaciones combinaciones = new Combinaciones(alphabet[j]+"", 5, codigoHash,  algoritmo);
-				combinaciones.start();			
+			/*for(int i=2; i<=6;++i)
+			{
+				init(algoritmo, codigoHash, i);
+			}*/
+			init(algoritmo, codigoHash, 3);
+			while(!encontrado) {
+				
 			}
-			
-			System.out.println("Se verificaron los primeros 5 caracteres");
 			//ArrayList<Combinaciones> combs= new ArrayList<Combinaciones>();
 			/*HashManager hm = new HashManager();
 			hm.init(algoritmo, codigoHash);
@@ -147,17 +150,43 @@ public class Hash {
 		return resultado;
 	}
 
+	/**
+	 * Método que comprueba si código criptográfico de hash por una palabra es igual. Al código criptográfico de hash ingresado por parámetro.
+	 * @param palabra Palabra la cual se le generará el código.
+	 * @param codigoHash Código de comparación.
+	 * @param algoritmo.  Tipo de algoritmo de Hash a utilizar.
+	 * @return True si son iguales. False en caso contrario.
+	 */
 	public static boolean comprobarAlgoritmo(String palabra, byte[] codigoHash, String algoritmo) {
-
-		/*boolean iguales = true;
-		byte[] codigo = generar_codigo(palabra, algoritmo);
-		for (int j = 0; j < codigo.length && iguales == true; ++j) 
-		{
-			iguales = (codigo[j] != codigoHash[j]) ? false : true;
-		}
-		return iguales;	*/
-		//System.out.println(++contador);
 		byte[] codigo = generar_codigo(palabra, algoritmo);
 		return Arrays.equals(codigo, codigoHash);
+		
+	}
+	
+	public synchronized void init(String algoritmo, byte[] codigo, int pNumCaracteres) {
+		encontrado =false;
+		hilos = new ArrayList<Thread>(); 
+		classHilos = new ArrayList<Combinaciones>(); 
+		for(int i=0; i<alphabet.length; ++i)
+		{
+			Combinaciones hilo = new Combinaciones(alphabet[i]+"", pNumCaracteres, codigo, algoritmo, this);
+			classHilos.add(hilo);
+			Thread t = new Thread(hilo);
+			hilos.add(t);
+			t.start();
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("deprecation")
+	public void update(Observable o, Object arg1) {
+		Combinaciones hilo = (Combinaciones) o;
+		resultado = hilo.darPalabra();
+		encontrado = true;
+		for (int i = 0; i < classHilos.size(); i++) 
+		{
+			classHilos.get(i).forceStop();
+		}
+		
 	}
 }
