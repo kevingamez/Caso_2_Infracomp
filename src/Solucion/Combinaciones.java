@@ -135,6 +135,10 @@ public class Combinaciones extends Observable implements Runnable{
 		//System.out.println("Thread done "+letra);
 	}
 	
+	/**
+	 * Método que valida si la palabra que llega como parametro tiene el mismo código criptográfico de hash que codigoCriptografico.
+	 * @param sb String a comparar.
+	 */
 	private void validate(String sb) {
 		encontrado = Hash.comprobarAlgoritmo(sb, codigoCriptografico, algoritmo);
 		//System.out.println(sb.toString());

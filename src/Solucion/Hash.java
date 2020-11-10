@@ -15,10 +15,26 @@ import java.util.Observer;
 @SuppressWarnings("deprecation")
 public class Hash implements Observer{
 
+	/**
+	 * Lista de Threads.
+	 */
 	private ArrayList<Thread> hilos;
+	
+	/**
+	 * Lista de combinaciones.
+	 */
 	private ArrayList<Combinaciones> classHilos;
+	/**
+	 * Resultado de la palabra buscada.
+	 */
 	private String resultado;
+
+	/**
+	 * Atributo en caso de encontrar la palabra.
+	 */
 	private boolean encontrado;
+
+
 	
 
 	/**
@@ -119,6 +135,10 @@ public class Hash implements Observer{
 		
 	}
 	
+	/**
+	 * Método que devuelve el resultado de la palabra buscada.
+	 * @return resultado.
+	 */
 	public synchronized void init(String algoritmo, byte[] codigo, int pNumCaracteres) {
 		encontrado =false;
 		hilos = new ArrayList<Thread>(); 
@@ -136,6 +156,12 @@ public class Hash implements Observer{
 	
 		return resultado;
 	}
+	
+	/**
+	 * Método que se invoca cuando un thread de Combinaciones encuentra una palabra que tiene el mismo hash buscado.
+	 * @param o Objeto que extiende de Observable
+	 * @param arg1 parametro opcional.
+	 */
 	@Override
 	@SuppressWarnings("deprecation")
 	public void update(Observable o, Object arg1) {

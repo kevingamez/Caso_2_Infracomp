@@ -3,6 +3,9 @@ package Solucion;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
 /**
  * Clase principal que se encarga de ejecutar la aplicación.
  * 
@@ -11,6 +14,9 @@ import java.io.InputStreamReader;
  */
 public class Main {
 
+	private final static String ALGORITMO = "AES";
+
+	
 	/**
 	 * Método main de la aplicación.
 	 * 
@@ -19,6 +25,8 @@ public class Main {
 	 */
 	public static void main(String[] arg) throws Exception {
 		String mensaje;
+		byte[] cifrado =null;
+		SecretKey secretKey = null;
 		String algoritmo = "";
 		byte[] codigoCriptograficoHash = null;
 		AtaqueDiccionario ataque = new AtaqueDiccionario();
@@ -51,11 +59,17 @@ public class Main {
 
 						long inicio = System.currentTimeMillis();
 						codigoCriptograficoHash = hash.generar_codigo(mensaje, algoritmo);
+						KeyGenerator keygen = KeyGenerator.getInstance(ALGORITMO);
+						//generar llave secreta.
+						secretKey = keygen.generateKey();
+						//cifrar código criptográfico de hash
+						cifrado = Simetrico.cifrar(secretKey,mensaje);
 						long fin = System.currentTimeMillis();
 						System.out.println("El código encriptado hash generado con el algoritmo " + algoritmo + " es:\n"
 								+ hash.imprimirHexa(codigoCriptograficoHash));
 						System.out.println(
 								"Longitud del código generado: " + hash.imprimirHexa(codigoCriptograficoHash).length());
+						System.out.println("Codigo cifrado: " + hash.imprimirHexa(cifrado));
 						System.out.println("El proceso de encriptado tardó: " + (fin - inicio) + " milisegundos\n");
 					}
 				} else if (Integer.parseInt(line) == 2) {
@@ -63,11 +77,13 @@ public class Main {
 					if (codigoCriptograficoHash != null) {
 						long inicio = System.currentTimeMillis();
 						String desencriptado = hash.identificar_entrada(codigoCriptograficoHash, algoritmo);
+						byte[] decifrado = Simetrico.decifrar(secretKey, cifrado);						
 						long fin = System.currentTimeMillis();
 						System.out.println("Se encontró " + 1 + " palabra con el código " + Hash.imprimirHexa(codigoCriptograficoHash));
 						System.out.println(desencriptado+": " +Hash.imprimirHexa(codigoCriptograficoHash));
+						System.out.println("Codigo hash desencriptado"+": " +Hash.imprimirHexa(codigoCriptograficoHash));
 						System.out.println("El proceso de obtención del código tardó: " + (fin - inicio) + " milisegundos\n");
-
+						
 					} else {
 						System.out.println("Por favor ejecute el paso 2 antes de realizar este proceso.");
 					}
