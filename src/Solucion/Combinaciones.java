@@ -76,6 +76,7 @@ public class Combinaciones extends Observable implements Runnable{
 		char[] set = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n', 'ñ', 'o', 'p', 'q', 'r', 's',
 				't', 'u', 'v', 'w', 'x', 'y', 'z' };
 		printAllKLengthRec(set, "", set.length, pNumCaracteres, pLetra);
+		forceStop();
 	}
 
 	/**
@@ -104,6 +105,7 @@ public class Combinaciones extends Observable implements Runnable{
 			// Decrece K pues se añade un nuevo caracter.
 			printAllKLengthRec(set, newPrefix, n, k - 1, letra);
 		}
+		
 	}
 
 	/**
@@ -128,13 +130,12 @@ public class Combinaciones extends Observable implements Runnable{
 			palabra = "";
 			darListaCombinaciones(caracteres, letra);
 		}
-		System.out.println("Thread done "+letra);
+		//System.out.println("Thread done "+letra);
 	}
 	
 	private void validate(String sb) {
 		encontrado = Hash.comprobarAlgoritmo(sb, codigoCriptografico, algoritmo);
-		//System.out.println(sb.toString());
-		if (encontrado) {
+			if (encontrado) {
 			palabra = sb;
 			// System.out.println("Lo encontre yo: " + clearText);
 			setChanged();

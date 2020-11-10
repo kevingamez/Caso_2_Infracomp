@@ -79,74 +79,14 @@ public class Hash implements Observer{
 	 */
 	public String identificar_entrada(byte[] codigoHash, String algoritmo) throws Exception {
 
-		String resultado = diccionario.obtenerValor(algoritmo, codigoHash);
+		resultado = diccionario.obtenerValor(algoritmo, codigoHash);
 		if (resultado.compareTo("") == 0) {
-			/*for (int i = 1; i <= 5 && !encontrado; ++i) {
-				LinkedList<String> combinaciones = Combinaciones.darListaCombinaciones(i, "");
-				while (!encontrado  && !combinaciones.isEmpty()) {
-					String prueba = combinaciones.removeFirst();
-					codigo = generar_codigo(prueba, algoritmo);
-					boolean iguales = true;
-					
-				    iguales = comprobarAlgoritmo(prueba, codigoHash, algoritmo);
-					
-					if (iguales) {
-						encontrado = true;
-						resultado = prueba;
-						System.out.println("Se encontró 1 palabra con el código " + Hash.imprimirHexa(codigoHash));
-						System.out.println(resultado + ": " + Hash.imprimirHexa(codigoHash));
-					}
-				}
-			}*/
 			int size = alphabet.length;
-			/*for(int i=2; i<=6;++i)
-			{
-				init(algoritmo, codigoHash, i);
-			}*/
 			init(algoritmo, codigoHash, 3);
-			while(!encontrado) {
-				
-			}
-			//ArrayList<Combinaciones> combs= new ArrayList<Combinaciones>();
-			/*HashManager hm = new HashManager();
-			hm.init(algoritmo, codigoHash);
-			while(!hm.fueEncontrado()) {
-				
-			}
-			resultado = hm.darResultado() + ": " + Hash.imprimirHexa(codigoHash) + "\n";*/
-			/*
-			for (int i = 6; i <= 7 && encontrado == false; ++i) 
-			{
-				for (int j = 97; j < 123; ++j) {
-					char letra = (char) j;
-					Combinaciones combinacion = new Combinaciones(""+letra, (i - 1), codigoHash, algoritmo);
-					combs.add(combinacion);
-					combinacion.start();
-				}
-			}
-
-			for(int i=0; i<combs.size() && encontrado==false; ++i)
-			{
-				resultado=combs.get(i).darPalabra();
-				if(resultado.compareTo("")!=0)
-				{
-					encontrado=true;
-					System.out.println("Se encontró 1 palabra con el código " + Hash.imprimirHexa(codigoHash));
-					System.out.println(resultado + ": " + Hash.imprimirHexa(codigoHash));
-				}
-				if(i==(combs.size()-1))
-				{
-					i=0;
-				}
-			}
-
-			//Detiene todos los threads de ejecución.
-			for(int i=0; i< combs.size(); ++i)
-			{
-				combs.get(i).stop();
-			}
-			*/
+			
+			
 		}
+		
 		return resultado;
 	}
 
@@ -183,10 +123,6 @@ public class Hash implements Observer{
 		Combinaciones hilo = (Combinaciones) o;
 		resultado = hilo.darPalabra();
 		encontrado = true;
-		for (int i = 0; i < classHilos.size(); i++) 
-		{
-			classHilos.get(i).forceStop();
-		}
 		
 	}
 }

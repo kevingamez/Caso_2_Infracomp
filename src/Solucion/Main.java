@@ -66,8 +66,7 @@ public class Main {
 						long fin = System.currentTimeMillis();
 						System.out.println("Se encontró " + 1 + " palabra con el código " + Hash.imprimirHexa(codigoCriptograficoHash));
 						System.out.println(desencriptado+": " +Hash.imprimirHexa(codigoCriptograficoHash));
-						System.out.println(
-								"El proceso de obtención del código tardó: " + (fin - inicio) + " milisegundos\n");
+						System.out.println("El proceso de obtención del código tardó: " + (fin - inicio) + " milisegundos\n");
 
 					} else {
 						System.out.println("Por favor ejecute el paso 2 antes de realizar este proceso.");
