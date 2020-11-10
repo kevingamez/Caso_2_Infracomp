@@ -46,11 +46,11 @@ public class Main {
 					System.out.println("Ingrese el mensaje:");
 					mensaje = bf.readLine().trim();
 					// Excepciones de cadenas
-					if (mensaje.length() > 7 || !mensaje.matches("[a-z]*")) {
+					if (mensaje.length() > 7 || !mensaje.matches("[a-z]*|ñ*")) {
 						if (mensaje.length() > 7) {
 							System.out.println("Por favor ingrese una cadena con menos de 7 caracteres.");
 						}
-						if (!mensaje.matches("[a-z]*")) {
+						if (!mensaje.matches("[a-z]*|ñ*")) {
 							System.out.println("Por favor ingrese un valor entre ('a-z')");
 						}
 					} else {

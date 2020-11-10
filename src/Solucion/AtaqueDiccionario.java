@@ -151,7 +151,7 @@ public class AtaqueDiccionario {
 				
 				if(rs.getString("Palabra")!=null) {
 					++i;
-					resultado += rs.getString("Palabra") + ": " + Hash.imprimirHexa(cadena) + "\n";
+					resultado += rs.getString("Palabra");
 				}
 				
 
@@ -162,7 +162,7 @@ public class AtaqueDiccionario {
 				//System.out.println("Se encontraron " + i + " palabras con el código " + Hash.imprimirHexa(cadena));
 				
 			}else {
-				//System.out.println("No funcionó el ataque por diccionario. Se procede a utilizar fuerza bruta.");
+				System.out.println("No funcionó el ataque por diccionario. Se procede a utilizar fuerza bruta.");
 				return "";
 			}
 
