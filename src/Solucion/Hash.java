@@ -19,6 +19,7 @@ public class Hash implements Observer{
 	private ArrayList<Combinaciones> classHilos;
 	private String resultado;
 	private boolean encontrado;
+	
 
 	/**
 	 * Atributo diccionario.
@@ -80,16 +81,31 @@ public class Hash implements Observer{
 	public String identificar_entrada(byte[] codigoHash, String algoritmo) throws Exception {
 
 		resultado = diccionario.obtenerValor(algoritmo, codigoHash);
+		
 		if (resultado.compareTo("") == 0) {
 			int size = alphabet.length;
-			init(algoritmo, codigoHash, 3);
-			
+			for(int i=0; i<size && !encontrado;++i)
+            {
+                encontrado=comprobarAlgoritmo(alphabet[i]+"", codigoHash, algoritmo);
+                resultado=(encontrado)?alphabet[i]+"":"";
+            }
+            if(resultado.compareTo("")==0)
+            {
+                for(int i=1; i<=6;++i)
+                {
+                    init(algoritmo, codigoHash, i);
+                }
+            }
+		}
+		while(this.darResultado().compareTo("")==0) {
 			
 		}
-		
 		return resultado;
 	}
-
+	public boolean fueEncontrado() {
+		return encontrado;
+	}
+	
 	/**
 	 * Método que comprueba si código criptográfico de hash por una palabra es igual. Al código criptográfico de hash ingresado por parámetro.
 	 * @param palabra Palabra la cual se le generará el código.
@@ -116,11 +132,14 @@ public class Hash implements Observer{
 			t.start();
 		}
 	}
+	public synchronized String darResultado() {
 	
+		return resultado;
+	}
 	@Override
 	@SuppressWarnings("deprecation")
 	public void update(Observable o, Object arg1) {
-		Combinaciones hilo = (Combinaciones) o;
+		Combinaciones hilo = (Combinaciones) o;	
 		resultado = hilo.darPalabra();
 		encontrado = true;
 		

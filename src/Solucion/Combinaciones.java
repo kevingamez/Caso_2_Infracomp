@@ -93,17 +93,19 @@ public class Combinaciones extends Observable implements Runnable{
 	public void printAllKLengthRec(char[] set, String prefix, int n, int k, String letra) {
 		// Caso base k=0
 		// Añade la constante de letra como prefijo.
-		if (k == 0) {
-			validate(letra+prefix);
-			return;
-		}
-		// Añade todos los caracteres recursivamente.
-		for (int i = 0; i < n && !encontrado ; ++i) {
-			// Nuevo caracter para ser añadido. Creación del prefijo.
-			String newPrefix = prefix + set[i];
+		if(!encontrado) {
+			if (k == 0) {
+				validate(letra+prefix);
+				return;
+			}
+			// Añade todos los caracteres recursivamente.
+			for (int i = 0; i < n && !encontrado ; ++i) {
+				// Nuevo caracter para ser añadido. Creación del prefijo.
+				String newPrefix = prefix + set[i];
 
-			// Decrece K pues se añade un nuevo caracter.
-			printAllKLengthRec(set, newPrefix, n, k - 1, letra);
+				// Decrece K pues se añade un nuevo caracter.
+				printAllKLengthRec(set, newPrefix, n, k - 1, letra);
+			}
 		}
 		
 	}
@@ -135,11 +137,13 @@ public class Combinaciones extends Observable implements Runnable{
 	
 	private void validate(String sb) {
 		encontrado = Hash.comprobarAlgoritmo(sb, codigoCriptografico, algoritmo);
+		//System.out.println(sb.toString());
 			if (encontrado) {
 			palabra = sb;
 			// System.out.println("Lo encontre yo: " + clearText);
 			setChanged();
 			notifyObservers();
+			forceStop();
 		}
 	}
 }
