@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Sat Nov 21 21:38:59 COT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0175-edd1-9eb8-000007583440 
+on database directory C:\Users\kga_2\OneDrive\Escritorio\Caso_2_Infracomp\data\baseDatos\Datos  with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4b9af9a9 
+Loaded from file:/C:/Users/kga_2/OneDrive/Escritorio/Caso_2_Infracomp/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=14.0.2+12-46
+user.dir=C:\Users\kga_2\OneDrive\Escritorio\Caso_2_Infracomp
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
