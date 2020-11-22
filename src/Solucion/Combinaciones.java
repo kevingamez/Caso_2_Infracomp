@@ -43,18 +43,24 @@ public class Combinaciones extends Observable implements Runnable{
 	 * Palabra encontrada.
 	 */
 	private String palabra;
+	
+	/**
+	 * Número de threads lanzados.
+	 */
+	private static int numThreads;
 
 	/**
 	 * Constructor de la clase que inicializa la letra del Thread.
 	 * 
 	 * @param letra Primera letra del Thread.
 	 */
-	public Combinaciones(String letra, int caracteres, byte[] codigoCriptografico, String algoritmo, Observer o) {
+	public Combinaciones(String letra, int caracteres, byte[] codigoCriptografico, String algoritmo, Observer o, int numThreads) {
 		this.letra = letra;
 		this.caracteres = caracteres;
 		this.codigoCriptografico = codigoCriptografico;
 		this.algoritmo = algoritmo;
-		encontrado=false;
+		this.numThreads=numThreads;
+		encontrado=false;		
 		addObserver(o);
 	}
 
@@ -72,10 +78,30 @@ public class Combinaciones extends Observable implements Runnable{
 	 * @param pLetra.         Letra inicial. Puede ser null.
 	 * @return
 	 */
-	public void darListaCombinaciones(int pNumCaracteres, String pLetra) {
+	public void darListaCombinaciones(int pNumCaracteres, String pLetra, int pNumThreads) {
+		
 		char[] set = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n', 'ñ', 'o', 'p', 'q', 'r', 's',
 				't', 'u', 'v', 'w', 'x', 'y', 'z' };
-		printAllKLengthRec(set, "", set.length, pNumCaracteres, pLetra);
+				
+		int num=Integer.parseInt(pLetra); 
+		int recorrido=((int) Math.ceil((set.length+1)/pNumThreads)); 
+		
+		int suma=recorrido*(num-1);
+		
+		if(num==8)
+		{
+			recorrido+=4;
+		}
+		
+		if(num==pNumThreads)
+		{
+			recorrido=recorrido-1;
+		}
+		
+		for(int i=0; i < recorrido; ++i)
+		{
+			printAllKLengthRec(set, "", set.length, pNumCaracteres, set[i+suma]+"");
+		}
 		forceStop();
 	}
 
@@ -130,7 +156,7 @@ public class Combinaciones extends Observable implements Runnable{
 	{
 		while(!encontrado) {
 			palabra = "";
-			darListaCombinaciones(caracteres, letra);
+			darListaCombinaciones(caracteres, letra, numThreads);
 		}
 		//System.out.println("Thread done "+letra);
 	}

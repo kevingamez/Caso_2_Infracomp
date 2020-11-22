@@ -75,8 +75,10 @@ public class Main {
 				} else if (Integer.parseInt(line) == 2) {
 					// Obtener código criptográfico del mensaje.
 					if (codigoCriptograficoHash != null) {
+						System.out.println("Ingrese el número de threads (i.e: 1, 2, 4, 8):");
+						int threads = Integer.parseInt(bf.readLine().trim());
 						long inicio = System.currentTimeMillis();
-						String desencriptado = hash.identificar_entrada(codigoCriptograficoHash, algoritmo);
+						String desencriptado = hash.identificar_entrada(codigoCriptograficoHash, algoritmo, threads);
 						byte[] decifrado = Simetrico.decifrar(secretKey, cifrado);						
 						long fin = System.currentTimeMillis();
 						System.out.println("Se encontró " + 1 + " palabra con el código " + Hash.imprimirHexa(codigoCriptograficoHash));

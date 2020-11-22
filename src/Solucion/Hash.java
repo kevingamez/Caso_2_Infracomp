@@ -1,10 +1,16 @@
 package Solucion;
 
+import java.lang.management.ManagementFactory;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.management.*;
+import javax.management.ObjectName;
 
 /**
  * Clase que genera el código hash de los datos con base en un algoritmo
@@ -19,7 +25,7 @@ public class Hash implements Observer{
 	 * Lista de Threads.
 	 */
 	private ArrayList<Thread> hilos;
-	
+
 	/**
 	 * Lista de combinaciones.
 	 */
@@ -35,20 +41,18 @@ public class Hash implements Observer{
 	private boolean encontrado;
 
 
-	
-
 	/**
 	 * Atributo diccionario.
 	 */
 	private static AtaqueDiccionario diccionario;
-
+	
 	/**
 	 * Constructor del hash.
 	 */
 	public Hash(AtaqueDiccionario diccionario) {
 		this.diccionario = diccionario;
 	}
-	
+
 	private static char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o',
 			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
@@ -89,39 +93,44 @@ public class Hash implements Observer{
 	/**
 	 * Método que retorna la cadena encriptada a partir de un código criptográfico
 	 * de hash y el nombre de su algoritmo.
-	 * 
 	 * @param codigoHash. Código criptográfico ingresado.
 	 * @param algoritmo   Algoritmo que será utilizado.
+	 * @param numThreads Número de threads que serán ejecutados para la búsqueda.
 	 * @return Mensaje original codificado.
 	 */
-	public String identificar_entrada(byte[] codigoHash, String algoritmo) throws Exception {
+	public String identificar_entrada(byte[] codigoHash, String algoritmo, int numThreads) throws Exception {
 
 		resultado = diccionario.obtenerValor(algoritmo, codigoHash);
+		if (resultado.compareTo("") == 0) 
+		{
+			int numCaracteres=5;
+			init(algoritmo, codigoHash, numCaracteres, numThreads);
+		}
 		
-		if (resultado.compareTo("") == 0) {
-			int size = alphabet.length;
-			for(int i=0; i<size && !encontrado;++i)
-            {
-                encontrado=comprobarAlgoritmo(alphabet[i]+"", codigoHash, algoritmo);
-                resultado=(encontrado)?alphabet[i]+"":"";
-            }
-            if(resultado.compareTo("")==0)
-            {
-                for(int i=1; i<=6;++i)
-                {
-                    init(algoritmo, codigoHash, i);
-                }
-            }
+		//Timer que obtiene el porcentaje de uso de CPU cada 5 minutos.
+		Timer timer = new Timer();
+		TimerTask tarea = new TimerTask() {				
+			@Override
+			public void run() {
+				try {
+					System.out.println("Porcentaje de uso de CPU: "+getSystemCpuLoad());
+				} catch (Exception e) {
+					
+				}					
+			}
+		};
+		timer.schedule(tarea, 0, 300000);
+		
+		while(this.darResultado().compareTo("")==0) 
+		{
+			//Método que realiza activa hasta que llegue el resultado de búsqueda en los Threads.
 		}
-		while(this.darResultado().compareTo("")==0) {
-			
-		}
+		timer.cancel();
+		timer.purge();
+		System.out.println("Porcentaje de uso de CPU: "+getSystemCpuLoad());
 		return resultado;
 	}
-	public boolean fueEncontrado() {
-		return encontrado;
-	}
-	
+
 	/**
 	 * Método que comprueba si código criptográfico de hash por una palabra es igual. Al código criptográfico de hash ingresado por parámetro.
 	 * @param palabra Palabra la cual se le generará el código.
@@ -132,20 +141,24 @@ public class Hash implements Observer{
 	public static boolean comprobarAlgoritmo(String palabra, byte[] codigoHash, String algoritmo) {
 		byte[] codigo = generar_codigo(palabra, algoritmo);
 		return Arrays.equals(codigo, codigoHash);
-		
+
 	}
-	
+
 	/**
 	 * Método que devuelve el resultado de la palabra buscada.
+	 * @param codigo. Código criptográfico ingresado.
+	 * @param algoritmo   Algoritmo que será utilizado.
+	 * @param pNumThreads Número de threads que serán ejecutados para la búsqueda.
+	 * @param pNumCaracteres Número de caracteres.
 	 * @return resultado.
 	 */
-	public synchronized void init(String algoritmo, byte[] codigo, int pNumCaracteres) {
+	public synchronized void init(String algoritmo, byte[] codigo, int pNumCaracteres, int pNumThreads) {
 		encontrado =false;
 		hilos = new ArrayList<Thread>(); 
 		classHilos = new ArrayList<Combinaciones>(); 
-		for(int i=0; i<alphabet.length; ++i)
+		for(int i=0; i<pNumThreads; ++i)
 		{
-			Combinaciones hilo = new Combinaciones(alphabet[i]+"", pNumCaracteres, codigo, algoritmo, this);
+			Combinaciones hilo = new Combinaciones((i+1)+"", pNumCaracteres-1, codigo, algoritmo, this, pNumThreads);
 			classHilos.add(hilo);
 			Thread t = new Thread(hilo);
 			hilos.add(t);
@@ -153,10 +166,10 @@ public class Hash implements Observer{
 		}
 	}
 	public synchronized String darResultado() {
-	
+
 		return resultado;
 	}
-	
+
 	/**
 	 * Método que se invoca cuando un thread de Combinaciones encuentra una palabra que tiene el mismo hash buscado.
 	 * @param o Objeto que extiende de Observable
@@ -168,6 +181,34 @@ public class Hash implements Observer{
 		Combinaciones hilo = (Combinaciones) o;	
 		resultado = hilo.darPalabra();
 		encontrado = true;
+
+	}
+
+	/**
+	 * Método que devuelve el uso del CPU cada 5 minutos.
+	 * @return Porcentaje de uso del CPU.
+	 * @throws Exception En caso de que ocurra un error.
+	 */
+	public double getSystemCpuLoad() throws Exception {
+		MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+		ObjectName name = ObjectName.getInstance("java.lang:type=OperatingSystem");
+		AttributeList list = mbs.getAttributes(name, new String[]{ "SystemCpuLoad" });
+		if (list.isEmpty()) return Double.NaN;
+		Attribute att = (Attribute)list.get(0);
+		Double value = (Double)att.getValue();
+		// usually takes a couple of seconds before we get real values
+		if (value == -1.0) return Double.NaN;
+		// returns a percentage value with 1 decimal point precision
+		return ((int)(value * 1000) / 10.0);
+	}
+	
+	/**
+	 * Método que obtiene el rendimiento por medio de un Timer cada 5 minutos.
+	 */
+	public void obtenerRendimientoCadaCincoMinutos()
+	{
 		
 	}
+	
+	
 }
