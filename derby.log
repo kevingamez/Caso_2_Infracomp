@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Sun Nov 22 00:28:48 COT 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0175-ee6d-15ea-00000780c540 
-on database directory C:\Users\ASUS\Desktop\Caso_2_Infracomp\data\baseDatos\Datos  with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@c387f44 
-Loaded from file:/C:/Users/ASUS/Desktop/Caso_2_Infracomp/lib/derby.jar
+Sun Nov 22 00:43:11 COT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0175-ee7a-42e4-00000f78af18 
+on database directory C:\Users\estudiante\Documents\Caso_2_Infracomp\data\baseDatos\Datos  with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4b9af9a9 
+Loaded from file:/C:/Users/estudiante/Documents/Caso_2_Infracomp/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=14.0.1+7
-user.dir=C:\Users\ASUS\Desktop\Caso_2_Infracomp
+java.runtime.version=14.0.2+12-46
+user.dir=C:\Users\estudiante\Documents\Caso_2_Infracomp
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

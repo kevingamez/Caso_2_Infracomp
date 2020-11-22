@@ -154,10 +154,13 @@ public class Combinaciones extends Observable implements Runnable{
 	 */
 	public synchronized void run() 
 	{
+		long inicio = System.currentTimeMillis();
 		while(!encontrado) {
 			palabra = "";
 			darListaCombinaciones(caracteres, letra, numThreads);
 		}
+		long fin = System.currentTimeMillis();
+		System.out.println("El Thread "+letra+ " tardó en ejecutarse "+ (fin-inicio));
 		//System.out.println("Thread done "+letra);
 	}
 	
