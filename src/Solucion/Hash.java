@@ -103,7 +103,7 @@ public class Hash implements Observer{
 		resultado = diccionario.obtenerValor(algoritmo, codigoHash);
 		if (resultado.compareTo("") == 0) 
 		{
-			int numCaracteres=5;
+			int numCaracteres=7;
 			init(algoritmo, codigoHash, numCaracteres, numThreads);
 		}
 		
@@ -200,15 +200,5 @@ public class Hash implements Observer{
 		if (value == -1.0) return Double.NaN;
 		// returns a percentage value with 1 decimal point precision
 		return ((int)(value * 1000) / 10.0);
-	}
-	
-	/**
-	 * Método que obtiene el rendimiento por medio de un Timer cada 5 minutos.
-	 */
-	public void obtenerRendimientoCadaCincoMinutos()
-	{
-		
-	}
-	
-	
+	}	
 }
