@@ -32,8 +32,7 @@ public class AtaqueDiccionario {
 
 	/**
 	 * Método constructor que conecta la base de datos.
-	 * 
-	 * @throws Exception
+	 * @throws Exception En caso de que ocurra un error al conectar a la base de datos.
 	 */
 	public AtaqueDiccionario() throws Exception {
 		conectarBaseDeDatos();
@@ -139,8 +138,9 @@ public class AtaqueDiccionario {
 	/**
 	 * Método que retorna todas las tuplas que se encuentren con el algoritmo
 	 * deseado.
-	 * 
-	 * @throws Exception
+	 * @param nombreAlgoritmo Nombre del algoritmo.
+	 * @param cadena Array de bits que será comprobado.
+	 * @return Valor encontrado en la base de datos. Vacío en caso contrario.
 	 */
 	public static String obtenerValor(String nombreAlgoritmo, byte[] cadena) {
 		int i = 0;
@@ -178,8 +178,6 @@ public class AtaqueDiccionario {
 
 	/**
 	 * Método que selecciona todas las entradas de la tabla de la base de datos.
-	 * 
-	 * @throws Exception si no se puede completar la acción.
 	 */
 	public static void datosTabla() {
 		try {
@@ -198,8 +196,6 @@ public class AtaqueDiccionario {
 
 	/**
 	 * Método que borra las entradas de la tabla de la base de datos.
-	 * 
-	 * @throws Exception si no se puede completar la acción.
 	 */
 	public static void borrarTabla() {
 

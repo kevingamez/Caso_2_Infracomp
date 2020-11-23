@@ -49,6 +49,7 @@ public class Hash implements Observer{
 	
 	/**
 	 * Constructor del hash.
+	 * @param diccionario Clase con la base de datos que ejecuta el ataque de diccionario correspondiente.
 	 */
 	@SuppressWarnings("static-access")
 	public Hash(AtaqueDiccionario diccionario) {
@@ -65,6 +66,7 @@ public class Hash implements Observer{
 	/**
 	 * Método que imprime un arreglo de bytes hexadecimal.
 	 * @param byteArray Arreglo de bytes que será impreso.
+	 * @return Método que imprime los caracteres de un arreglo de bytes hexadecimal.
 	 */
 	public static String imprimirHexa(byte[] byteArray) {
 		String out = "";
@@ -101,7 +103,9 @@ public class Hash implements Observer{
 	 * @param algoritmo   Algoritmo que será utilizado.
 	 * @param numThreads Número de threads que serán ejecutados para la búsqueda.
 	 * @return Mensaje original codificado.
+	 * @throws Exception En caso de que ocurra un fallo de ejecución.
 	 */
+	@SuppressWarnings("static-access")
 	public String identificar_entrada(byte[] codigoHash, String algoritmo, int numThreads) throws Exception {
 
 		//Se implementa un ataque de diccionario primero.
@@ -157,7 +161,6 @@ public class Hash implements Observer{
 	 * @param algoritmo   Algoritmo que será utilizado.
 	 * @param pNumThreads Número de threads que serán ejecutados para la búsqueda.
 	 * @param pNumCaracteres Número de caracteres.
-	 * @return resultado.
 	 */
 	public synchronized void init(String algoritmo, byte[] codigo, int pNumCaracteres, int pNumThreads) {
 		encontrado =false;

@@ -57,6 +57,11 @@ public class Combinaciones extends Observable implements Runnable{
 	/**
 	 * Constructor de la clase que inicializa la letra del Thread.
 	 * @param letra Primera letra del Thread.
+	 * @param caracteres Número de caracteres de combinaciones.
+	 * @param codigoCriptografico Código de bytes criptográfico.
+	 * @param algoritmo Algoritmo que será utilizado para comprobación.
+	 * @param o Observador de la clase.
+	 * @param numThreads. Número de threads lanzados.
 	 */
 	@SuppressWarnings("static-access")
 	public Combinaciones(String letra, int caracteres, byte[] codigoCriptografico, String algoritmo, Observer o, int numThreads) {
@@ -80,27 +85,34 @@ public class Combinaciones extends Observable implements Runnable{
 	 * Método que retorna una lista con todas las combinaciones de letras posibles.
 	 * @param pNumCaracteres. Número de subconjuntos creados.
 	 * @param pLetra.         Letra inicial. Puede ser null.
+	 * @param pNumThreads. Número de Threads que serán lanzados.
 	 */
 	public void darListaCombinaciones(int pNumCaracteres, String pLetra, int pNumThreads) {
 
+		//Alfabeto que será recorrido.
 		char[] set = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm','n', 'ñ', 'o', 'p', 'q', 'r', 's',
 				't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
+		//Número del thread.
 		int num=Integer.parseInt(pLetra); 
 		int recorrido=((int) Math.ceil((set.length+1)/pNumThreads)); 
-
+		
+		//Punto de inicio del thread sobre el alfabeto con respecto a los otros threads.
 		int suma=recorrido*(num-1);
 
+		//Caso especial para el Thread 8.
 		if(num==8)
 		{
 			recorrido+=4;
 		}
 
+		//Disminución del recorrido en la última ejecución para evitar errores.
 		if(num==pNumThreads)
 		{
 			recorrido=recorrido-1;
 		}
 
+		//Recorrido por cada letra asignada.
 		for(int i=0; i < recorrido; ++i)
 		{
 			printAllKLengthRec(set, "", set.length, pNumCaracteres, set[i+suma]+"");

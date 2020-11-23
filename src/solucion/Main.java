@@ -18,8 +18,8 @@ public class Main {
 	
 	/**
 	 * Método main de la aplicación.
-	 * @param arg
-	 * @throws Exception
+	 * @param arg Parámetros de ejecución.
+	 * @throws Exception Excepción en caso de que ocurra un error.
 	 */
 	@SuppressWarnings("static-access")
 	public static void main(String[] arg) throws Exception {
