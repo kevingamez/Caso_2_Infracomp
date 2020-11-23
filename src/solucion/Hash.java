@@ -1,4 +1,4 @@
-package Solucion;
+package solucion;
 
 import java.lang.management.ManagementFactory;
 import java.security.MessageDigest;
@@ -30,6 +30,7 @@ public class Hash implements Observer{
 	 * Lista de combinaciones.
 	 */
 	private ArrayList<Combinaciones> classHilos;
+	
 	/**
 	 * Resultado de la palabra buscada.
 	 */
@@ -38,8 +39,8 @@ public class Hash implements Observer{
 	/**
 	 * Atributo en caso de encontrar la palabra.
 	 */
+	@SuppressWarnings("unused")
 	private boolean encontrado;
-
 
 	/**
 	 * Atributo diccionario.
@@ -49,16 +50,20 @@ public class Hash implements Observer{
 	/**
 	 * Constructor del hash.
 	 */
+	@SuppressWarnings("static-access")
 	public Hash(AtaqueDiccionario diccionario) {
 		this.diccionario = diccionario;
 	}
 
+	/**
+	 * Alfabeto utilizado para inicializar Threads.
+	 */
+	@SuppressWarnings("unused")
 	private static char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o',
 			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 	/**
 	 * Método que imprime un arreglo de bytes hexadecimal.
-	 * 
 	 * @param byteArray Arreglo de bytes que será impreso.
 	 */
 	public static String imprimirHexa(byte[] byteArray) {
@@ -75,7 +80,6 @@ public class Hash implements Observer{
 	/**
 	 * Método que genera el código criptográfico hash de un mensaje a partir de un
 	 * algoritmo ingresado por parámetro.
-	 * 
 	 * @param pMensaje  Mensaje que será encriptado.
 	 * @param algoritmo Algoritmo que será utilizado.
 	 * @return Código en bytes encriptado.
@@ -100,7 +104,10 @@ public class Hash implements Observer{
 	 */
 	public String identificar_entrada(byte[] codigoHash, String algoritmo, int numThreads) throws Exception {
 
+		//Se implementa un ataque de diccionario primero.
 		resultado = diccionario.obtenerValor(algoritmo, codigoHash);
+		
+		//Fuerza bruta en caso de que el ataque por diccionario falle.
 		if (resultado.compareTo("") == 0) 
 		{
 			int numCaracteres=7;
@@ -123,7 +130,7 @@ public class Hash implements Observer{
 		
 		while(this.darResultado().compareTo("")==0) 
 		{
-			//Método que realiza activa hasta que llegue el resultado de búsqueda en los Threads.
+			//Método que realiza una espera activa hasta que llegue el resultado de búsqueda en los Threads.
 		}
 		timer.cancel();
 		timer.purge();
@@ -165,6 +172,11 @@ public class Hash implements Observer{
 			t.start();
 		}
 	}
+	
+	/**
+	 * Método sincrónico que retorna el resultado de la búsqueda.
+	 * @return Resultado de la búsqueda.
+	 */
 	public synchronized String darResultado() {
 
 		return resultado;
@@ -176,7 +188,6 @@ public class Hash implements Observer{
 	 * @param arg1 parametro opcional.
 	 */
 	@Override
-	@SuppressWarnings("deprecation")
 	public void update(Observable o, Object arg1) {
 		Combinaciones hilo = (Combinaciones) o;	
 		resultado = hilo.darPalabra();

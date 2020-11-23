@@ -1,11 +1,10 @@
-package Solucion;
+package solucion;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
 /**
  * Clase que genera un cifrado simétrico sobre una cadena de caracteres.
- * 
  * @author Sergio Julian Zona Moreno y Kevin Steven Gamez Abril
  */
 public class Simetrico {

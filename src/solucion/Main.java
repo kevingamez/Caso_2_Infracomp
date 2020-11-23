@@ -1,4 +1,4 @@
-package Solucion;
+package solucion;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,14 +15,13 @@ import javax.crypto.SecretKey;
 public class Main {
 
 	private final static String ALGORITMO = "AES";
-
 	
 	/**
 	 * Método main de la aplicación.
-	 * 
 	 * @param arg
 	 * @throws Exception
 	 */
+	@SuppressWarnings("static-access")
 	public static void main(String[] arg) throws Exception {
 		String mensaje;
 		byte[] cifrado =null;
@@ -79,6 +78,7 @@ public class Main {
 						int threads = Integer.parseInt(bf.readLine().trim());
 						long inicio = System.currentTimeMillis();
 						String desencriptado = hash.identificar_entrada(codigoCriptograficoHash, algoritmo, threads);
+						@SuppressWarnings("unused")
 						byte[] decifrado = Simetrico.decifrar(secretKey, cifrado);						
 						long fin = System.currentTimeMillis();
 						System.out.println("Se encontró " + 1 + " palabra con el código " + Hash.imprimirHexa(codigoCriptograficoHash));

@@ -1,16 +1,12 @@
-package Solucion;
+package solucion;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.management.Query;
 
 /**
  * Clase que maneja la base de datos con la que se realizarán ataques de
@@ -18,8 +14,15 @@ import javax.management.Query;
  * 
  * @author Sergio Julian Zona Moreno y Kevin Steven Gamez Abril
  */
+/*
+ * Basamos principalmente la implementación de la base de datos en la documentación oficial presentada por Apache Derby.
+ * Esta base de datos es embebida, por lo que solamente admite la ejecución de un programa a la vez.
+ */
 public class AtaqueDiccionario {
 
+	/**
+	 * Dirección de sentencia SQL enviada para el ataque de diccionario.
+	 */
 	public final static String SQL = "javax.jdo.query.SQL";
 
 	/**
@@ -38,17 +41,18 @@ public class AtaqueDiccionario {
 
 	/**
 	 * Método que crea la base de datos.
-	 * 
 	 * @return Base de datos creada.
 	 */
 	public static Connection CrearDB() {
 
+		//Path donde se encuentra la base de datos. Véase la carpeta DATA.
 		String path = "./data/baseDatos/Datos";
 		File url = new File(path);
 		if (url.exists()) {
 			System.out.println("Base de datos ya existe");
 		} else {
 			try {
+				//En caso de que no exista la base de datos se crea.
 				Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 				String db = "jdbc:derby:" + path + ";create=true";
 				con = DriverManager.getConnection(db);
@@ -84,6 +88,7 @@ public class AtaqueDiccionario {
 	/**
 	 * Método que inserta todas las tuplas de datos en la base de datos.
 	 */
+	@SuppressWarnings("resource")
 	public static void insertarValores() {
 
 		HashSet<String> set = new HashSet<String>();
@@ -115,7 +120,6 @@ public class AtaqueDiccionario {
 			int i = 1;
 			for (String palabra : set) {
 				++i;
-				// System.out.println(palabra);
 				String ejecucion = "INSERT INTO HashCode (id, palabra, MD5, SHA_256, SHA_384, SHA_512) " + "values ("
 						+ i + ",'" + palabra + "','" + Hash.imprimirHexa(Hash.generar_codigo(palabra, "MD5")) + "','"
 						+ Hash.imprimirHexa(Hash.generar_codigo(palabra, "SHA-256")) + "','"
@@ -148,19 +152,19 @@ public class AtaqueDiccionario {
 					+ Hash.imprimirHexa(cadena) + "'";
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				
+
 				if(rs.getString("Palabra")!=null) {
 					++i;
 					resultado += rs.getString("Palabra");
 				}
-				
+
 
 			}
 			if (i == 1) {
 				//System.out.println("Se encontró " + i + " palabra con el código " + Hash.imprimirHexa(cadena));
 			}else if(i > 1) {
 				//System.out.println("Se encontraron " + i + " palabras con el código " + Hash.imprimirHexa(cadena));
-				
+
 			}else {
 				System.out.println("No funcionó el ataque por diccionario. Se procede a utilizar fuerza bruta.");
 				return "";
